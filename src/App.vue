@@ -318,6 +318,7 @@ body {
         height: 700px;
         width: 100%;
         object-fit: cover;
+        object-position: top;
     }
     &__header {
         display: flex;

@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "host": "firebase deploy --only hosting",
+    "deploy": "yarn build && yarn host"
   },
   "dependencies": {
     "vue": "^3.2.25"
