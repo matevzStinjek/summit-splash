@@ -228,6 +228,8 @@ body {
 }
 
 .explanation {
+    margin-bottom: 32px;
+
     &--desktop {
         margin: auto;
         width: fit-content;
@@ -249,9 +251,6 @@ body {
 }
 @media only screen and (max-width: 960px) {
     .explanation {
-        &--desktop {
-            display: none;
-        }
         &__title {
             font-size: 24px;
         }
@@ -319,6 +318,7 @@ body {
         width: 100%;
         object-fit: cover;
         object-position: top;
+        top: -1px;
     }
     &__header {
         display: flex;
