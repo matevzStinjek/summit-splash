@@ -14,14 +14,19 @@
                     </div>
                 </div>
                 <div v-if="isViewportDesktop" class="landing__right">
-                    <img class="landing__map" src="https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Fmap.png?alt=media">
+                    <img class="landing__map" src="https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Fmap.png?alt=media" @click="isMapOpen = true">
                 </div>
             </div>
         </div>
     </div>
     <div v-if="isViewportMobile" class="landing__mobile-map">
-        <img class="landing__map" src="https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Fmap.png?alt=media">
+        <img class="landing__map" src="https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Fmap-full.png?alt=media" @click="isMapOpen = true">
     </div>
+
+    <Modal v-if="isMapOpen" has-overlay @click="isMapOpen = false">
+        <img class="zoomed-map" src="https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Fmap-full.png?alt=media">
+    </Modal>
+
 
     <!-- explanation -->
     <div class="explanation">
@@ -42,7 +47,7 @@
                 <div class="slide__description">{{ spotlight.description }}</div>
             </div>
             <div class="indicator__container">
-                <div v-for="n in 4" class="indicator" :class="{ 'indicator--on': n === spotlightIndex }"></div>
+                <div v-for="n in 4" class="indicator" :class="{ 'indicator--on': n - 1 === spotlightIndex }"></div>
             </div>
         </div>
     </div>
@@ -61,22 +66,25 @@
 </template>
 
 <script lang="ts">
+import Modal from './Modal.vue'
 import { breakpoints } from './breakpoints'
 import { defineComponent } from 'vue'
 
 type Data = {
     content: Record<string, string>[],
-    spotlightIndex: number,
-    viewportWidth: number | null,
 }
 
 export default defineComponent({
+    components: {
+        Modal,
+    },
     mixins: [breakpoints],
-    data (): Data {
+    data (): Data & any {
         return {
             content: [],
             spotlightIndex: 0,
             viewportWidth: null,
+            isMapOpen: false,
         }
     },
     computed: {
@@ -90,9 +98,9 @@ export default defineComponent({
             description: 'Enter the Lost Worlds app to find Location Based NFTs scattered throughout the Avalanche Summit',
             url: 'https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Fexplore.png?alt=media',
         }, {
-            title: 'Explore the Summit',
-            description: 'Enter the Lost Worlds app to find Location Based NFTs scattered throughout the Avalanche Summit',
-            url: 'https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Fexplore.png?alt=media',
+            title: 'Visit NFT Drops',
+            description: 'Travel to the different locations within the Poble to mint NFTs from over 30+ Avalanche projects',
+            url: 'https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Flocation.png?alt=media',
         }, {
             title: 'Mint & Collect NFTs',
             description: 'Mint & Collect NFT Collectibles, or Voucher NFTs for Merch, Tickets, Tokens, and More',
@@ -103,9 +111,14 @@ export default defineComponent({
             url: 'https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Fmarket.png?alt=media&',
         }]
 
+        new Image().src = 'https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Fexplore.png?alt=media'
+        new Image().src = 'https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Flocation.png?alt=media'
+        new Image().src = 'https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Fmint.png?alt=media'
+        new Image().src = 'https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Fmarket.png?alt=media&'
+
         setInterval(() => {
-            this.spotlightIndex++
-        }, 2000)
+            this.spotlightIndex = (this.spotlightIndex + 1) % this.content.length
+        }, 3000)
     },
 })
 </script>
@@ -173,6 +186,7 @@ body {
         max-width: 580px;
     }
     &__button {
+        cursor: pointer;
         background: #151515;
         border: 2px solid white;
         box-shadow: 0 8px 8px rgba(0, 0, 0, 0.25);
@@ -194,6 +208,7 @@ body {
         // box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.25);
         width: 100%;
         filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5));
+        cursor: pointer;
     }
     &__mobile-map {
         padding: 0 22px;
@@ -355,5 +370,10 @@ body {
             font-size: 24px;
         }
     }
+}
+.zoomed-map {
+    padding: 16px;
+    object-fit: contain;
+    width: 100%;
 }
 </style>
