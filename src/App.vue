@@ -7,10 +7,11 @@
             <div class="landing__presents">Presents</div>
             <div class="landing__flex">
                 <div class="landing__left">
-                    <div class="landing__platform">Location Based NFTs at Avalanche Summit</div>
-                    <div class="landing__button">
-                        <div>See Drops</div>
-                        <svg class="landing__diamond" viewBox="0 0 46 29" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="#7EBFFF" d="M9.549 0h26.734v10.167H9.549z"/><path d="M22.915 28.19 3.07 9.82h39.69L22.915 28.19Z" fill="#339AFF"/><path d="M22.914 28.19 16.3 9.82h13.23l-6.615 18.37Z" fill="#7EBFFF"/><path d="m22.917 0 6.615 10.052h-13.23L22.917 0Z" fill="#ADD4FF"/><path d="m36.093 0 6.78 10.052h-13.56L36.093 0Z" fill="#64B3FE"/><path d="m9.547 0 6.615 10.052H2.932L9.547 0Z" fill="#D4E8FF"/></svg>
+                    <div class="landing__platform">Location Based NFTs at</div>
+                    <img class="landing__summit" src="https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Fsummit.png?alt=media">
+                    <div v-if="isViewportDesktop" class="landing__presents">Barcelona, March 22nd - 27th</div>
+                    <div class="landing__button" @click="onCta">
+                        <div>Discord Updates</div>
                     </div>
                 </div>
                 <div v-if="isViewportDesktop" class="landing__right">
@@ -20,6 +21,7 @@
         </div>
     </div>
     <div v-if="isViewportMobile" class="landing__mobile-map">
+        <div style="text-align: center; margin-bottom: 5px; font-weight: 600;" class="landing__presents">Barcelona, March 22nd - 27th</div>
         <img class="landing__map" src="https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Fmap-full.png?alt=media" @click="isMapOpen = true">
     </div>
 
@@ -71,7 +73,10 @@ import { breakpoints } from './breakpoints'
 import { defineComponent } from 'vue'
 
 type Data = {
-    content: Record<string, string>[],
+    content: Record<string, string>[];
+    spotlightIndex: number;
+    viewportWidth: number | null;
+    isMapOpen: boolean;
 }
 
 export default defineComponent({
@@ -79,7 +84,7 @@ export default defineComponent({
         Modal,
     },
     mixins: [breakpoints],
-    data (): Data & any {
+    data (): Data {
         return {
             content: [],
             spotlightIndex: 0,
@@ -120,6 +125,11 @@ export default defineComponent({
             this.spotlightIndex = (this.spotlightIndex + 1) % this.content.length
         }, 3000)
     },
+    methods: {
+        onCta () {
+            window.open('https://discord.gg/g7Gr9SAHrP', "_blank")
+        },
+    }
 })
 </script>
 
@@ -137,7 +147,7 @@ body {
 
 <style scoped lang="scss">
 .landing {
-    background: url("https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Flanding.jpg?alt=media") no-repeat center;
+    background: url("https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Flanding-desktop.jpg?alt=media") no-repeat center;
     background-size: cover;
     min-height: 660px;
     position: relative;
@@ -162,7 +172,6 @@ body {
     }
     &__presents {
         font-size: 24px;
-        font-weight: 700;
         color: white;
     }
     &__flex {
@@ -172,7 +181,11 @@ body {
         margin-right: 9vw;
         flex: 6;
         min-width: 0;
-        max-width: 420px;
+        max-width: 460px;
+    }
+    &__summit {
+        width: 280px;
+        margin: 12px 0;
     }
     &__right {
         min-width: 0;
@@ -212,12 +225,16 @@ body {
     }
     &__mobile-map {
         padding: 0 22px;
-        margin-top: -64px;
+        margin-top: -74px;
         position: relative;
     }
 }
 @media only screen and (max-width: 960px) {
     .landing {
+        background: url("https://firebasestorage.googleapis.com/v0/b/lost-worlds-314301.appspot.com/o/summit%2Flanding-mobile.jpg?alt=media") no-repeat center;
+        background-size: cover;
+        min-height: 500px;
+
         &__logo {
             width: 194px;
         }
@@ -234,7 +251,7 @@ body {
             width: 161px;
             height: 49px;
             font-size: 18px;
-            margin-top: 48px;
+            margin-top: 0px;
         }
         &__diamond {
             width: 32px;
@@ -289,6 +306,7 @@ body {
     &__img {
         height: 480px;
         width: fit-content;
+        object-fit: contain;
     }
     &__title {
         font-size: 18px;

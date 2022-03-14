@@ -1,5 +1,5 @@
 <template>
-    <div class="modal" :class="{ 'modal--overlay': hasOverlay }" @click="$emit('click')">
+    <div class="modal" :class="{ 'modal--overlay': hasOverlay }" @click="onClose">
         <slot />
     </div>
 </template>
@@ -12,8 +12,11 @@ export default {
     created () {
         document.body.style.overflow = 'hidden'
     },
-    destroyed () {
-        document.body.style.overflow = 'auto'
+    methods: {
+        onClose () {
+            document.body.style.overflow = 'auto'
+            this.$emit('click')
+        }
     },
 }
 </script>
