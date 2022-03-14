@@ -306,6 +306,7 @@ body {
     &__img {
         height: 480px;
         width: fit-content;
+        max-width: 100vw;
         object-fit: contain;
     }
     &__title {
